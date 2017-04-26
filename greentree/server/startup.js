@@ -2,8 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import { Students } from '../imports/api/students';
 
 Meteor.startup(() => {
-  console.log('Fixtures');
-
   if(Students.find().count() <= 0) {
     console.log('No Students Found, Load CSV');
     Assets.getText('students.csv', function(err, res) {

@@ -14,37 +14,43 @@ class LineChart {
 
     $reactive(this).attach($scope);
 
-    this.subscribe('barChart', () => [{
-      type: this.getReactively('type')
-    }])
+    this.subscribe('bubbleChart')
 
-    this.type = '';
+    // this.data = [];
     this.labels = [];
-    this.data = [];
-    this.datasetOverride = [
-    ]
+    this.datasetOverride = [];
     this.options = {
-      showLines: false,
+      maintainAspectRatio: false,
+      legend: {
+        display: true,
+        position: 'bottom',
+        fullWidth: true
+      },
       scales: {
         xAxes: [
           {
-            type: 'linear',
-            position: 'bottom',
+            gridLines: {
+              display: false
+            },
             scaleLabel: {
               display: true,
-              fontSize: 16
+              fontSize: 16,
+              labelString: "Travel Time"
             },
             ticks: {
               min: 0,
-              max: 5,
+              max: 4,
               stepSize: 1
             }
           }
         ],
         yAxes: [
           {
+            gridLines: {
+              display: false
+            },
             ticks: {
-              suggestedMin: 8
+              stepSize: 1
             },
             scaleLabel: {
               display: true,
@@ -57,37 +63,21 @@ class LineChart {
     }
 
     this.helpers({
-      types() {
-        return [
-          {val: 'traveltime', name: 'Travel Time'},
-        ]
-      },
+      data() {
+        let graphData = [];
+        let groupedStudents = _.groupBy(Students.find().fetch(), 'traveltime');
 
-      students() {
-        this.data = [];
-        this.labels = [];
-        this.options.scales.xAxes[0].scaleLabel.labelString = this.type.name;
-
-        this.groupedStudents = _.groupBy(Students.find().fetch(), this.type.val);
-        let result = {};
-
-        for (let key in this.groupedStudents) {
+        for (let key in groupedStudents) {
           if (key == 'undefined') return;
-          let count = this.groupedStudents[key].length;
-          let total = 0;
+          let groupedByGrade = _.groupBy(groupedStudents[key], "G3")
 
-          this.groupedStudents[key].forEach( (student) => {
-            if(student.G3 < 2) console.log(student);
-            let finalGrade = parseInt(student.G3);
-            total += finalGrade;
-            this.data.push({x: key, y: finalGrade})
-          })
-
-          // this.labels.push(key);
-          // this.data[0].push( {x: key, y: (total / count).toFixed(2) } );
+          for (let key2 in groupedByGrade) {
+            let normalizedValue = (20-4) / (34-0) * (groupedByGrade[key2].length-34) + 20;
+            graphData.push( { x: key, y: key2, r: Math.floor(normalizedValue) })
+          }
         }
-
-        console.log(this.data);
+        console.log(graphData)
+        return graphData;
       }
     });
   }

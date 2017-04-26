@@ -17,5 +17,9 @@ if ( Meteor.isServer ) {
     if ( options.type ) queryOptions.fields[options.type.val] = 1;
 
     return Students.find({}, queryOptions);
+  });
+
+  Meteor.publish('bubbleChart', function() {
+    return Students.find({}, {fields: {G3: 1, traveltime: 1}})
   })
 }
