@@ -1,0 +1,18 @@
+md-card(md-whiteframe="10")
+  md-toolbar.md-primary(md-whiteframe="5")
+    md-card-title
+      md-card-title-text.md-toolbar-tools
+        span.md-headline
+          | Line Chart - Effects on Final Grade Average
+  md-card-content(layout="column")
+    md-input-container
+      label Query Type
+      md-icon(md-svg-src="action:ic_help_outline_24px")
+      md-select(name="type" ng-model="lineChart.type")
+        md-option(ng-repeat="type in lineChart.types" ng-value="type") {{ type.name }}
+    .chart-div(flex="80")
+      canvas#mixed.chart-line(chart-data="lineChart.data" chart-labels="lineChart.labels" chart-options="lineChart.options" chart-dataset-override="lineChart.datasetOverride")
+      //- div(ng-if="!lineChart.data.length && !lineChart.labels.length" layout="column" layout-align="center center" layout-margin layout-padding)
+      //-   md-subheader.md-primary
+      //-     h2 No Data to Display
+      //-     h4: i Please Select a Query from the Dropdown

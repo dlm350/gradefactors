@@ -5,43 +5,11 @@ import uiRouter from 'angular-ui-router';
 import 'angular-chart.js';
 
 import template from './greentree.jade';
+import { name as Titlebar } from '../titlebar/titlebar';
+import { name as BarChart } from '../charts/bar/bar';
+import { name as LineChart } from '../charts/line/line';
 
-import { Students } from '/imports/api/students';
-
-class Greentree {
-  constructor ($scope, $reactive) {
-    'ngInject';
-
-    $reactive(this).attach($scope);
-
-    this.subscribe('students');
-
-    this.helpers({
-      students() {
-        return Students.find().fetch();
-      },
-
-      labels() {
-        return ['G1', 'G2', 'G3']
-      },
-
-      data() {
-        let students = Students.find({}).fetch();
-        let g1 = 0;
-        let g2 = 0;
-        let g3 = 0;
-
-        students.forEach(function(student){
-          g1 = g1 + parseInt(student.G1);
-          g2 = g2 + parseInt(student.G2);
-          g3 = g3 + parseInt(student.G3);
-        })
-
-        return [g1, g2, g3];
-      }
-    })
-  }
-}
+class Greentree {}
 
 const name = 'greentree';
 
@@ -49,6 +17,9 @@ export default angular.module(name, [
   angularMeteor,
   ngMaterial,
   uiRouter,
+  Titlebar,
+  BarChart,
+  LineChart,
   'chart.js'
 ])
 .component(name, {
@@ -82,8 +53,8 @@ function config($locationProvider, $urlRouterProvider, $qProvider, $mdIconProvid
       iconPath + 'svg-sprite-communication.svg')
     .iconSet('content',
       iconPath + 'svg-sprite-content.svg')
-    .iconSet('file',
-      iconPath + 'svg-sprite-file.svg')
+    .iconSet('editor',
+      iconPath + 'svg-sprite-editor.svg')
     .iconSet('image',
       iconPath + 'svg-sprite-image.svg')
     .iconSet('navigation',

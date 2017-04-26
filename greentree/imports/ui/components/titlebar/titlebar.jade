@@ -1,0 +1,19 @@
+md-toolbar
+  .md-toolbar-tools
+    h2(flex="15") GreenTree
+    span(flex)
+    md-fab-speed-dial.md-scale(ng-hide="titlebar.hidden" md-direction="left" md-open="titlebar.open" ng-mouseenter="titlebar.open=true" ng-mouseleave="titlebar.open=false")
+      md-fab-trigger
+        md-button.md-accent.md-raised
+          md-tooltip Menu
+          md-icon(md-svg-icon="navigation:ic_menu_24px")
+      md-fab-actions.md-toolbar-tools
+        md-button.md-raised.md-mini.md-accent(ui-sref="bar_chart")
+          md-icon(md-svg-icon="editor:ic_insert_chart_24px")
+          md-tooltip Bar Chart
+        md-button.md-raised.md-mini.md-accent(ui-sref="line_chart")
+          md-icon(md-svg-icon="editor:ic_show_chart_24px")
+          md-tooltip Line Chart
+        md-button.md-raised.md-mini.md-accent(ui-sref="pie_chart")
+          md-icon(md-svg-icon="editor:ic_pie_chart_24px")
+          md-tooltip Pie Chart
