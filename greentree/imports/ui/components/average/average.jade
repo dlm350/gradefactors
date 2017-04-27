@@ -1,0 +1,25 @@
+md-card(md-whiteframe="10")
+  md-toolbar.md-primary(md-whiteframe="5")
+    md-card-title
+      md-card-title-text.md-toolbar-tools
+        span.md-headline
+          | Effects of Various Factors on Final Grade Average
+  md-card-content(layout="column" layout-align="center")
+    md-input-container.md-block
+      label Query Type
+      md-icon(md-svg-src="action:ic_help_outline_24px")
+      md-select(name="type" ng-model="average.type")
+        md-option(ng-repeat="type in average.types" ng-value="type") {{ type.name }}
+    div(layout="row")
+      span(flex="5")
+      span(ng-show="average.subReady && average.labels.length" layout="column" layout-align="center center" flex="20")
+        .chart-div.pie(flex="50")
+          canvas#pie.chart.chart-base(chart-type="average.pie.type" chart-data="average.pie.data" chart-labels="average.labels" chart-options="average.pie.options" chart-colors="average.colors" chart-dataset-override="average.pie.datasetOverride")
+        md-button.md-primary.md-raised(ng-click="average.toggleChart()")
+          | Toggle Pie Chart
+      span(flex="5")
+      .chart-div(layout="row" layout-align="center center" flex="70")
+        md-subheader.md-primary(ng-show="!average.subReady || !average.labels.length")
+          h2 No Data to Display
+          h4: i Please Select a Query from the Dropdown
+        canvas#bar.chart.chart-bar(ng-show="average.subReady && average.labels.length" chart-data="average.bar.data" chart-labels="average.labels" chart-options="average.bar.options" chart-colors="average.colors" chart-dataset-override="average.bar.datasetOverride")

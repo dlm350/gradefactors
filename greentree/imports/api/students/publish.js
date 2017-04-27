@@ -6,7 +6,7 @@ if ( Meteor.isServer ) {
     return Students.find();
   });
 
-  Meteor.publish('barChart', function(options) {
+  Meteor.publish('average', function(options) {
     if (!options.type) return;
     let queryOptions = {
       fields: {
@@ -19,7 +19,11 @@ if ( Meteor.isServer ) {
     return Students.find({}, queryOptions);
   });
 
-  Meteor.publish('bubbleChart', function() {
+  Meteor.publish('travel', function() {
     return Students.find({}, {fields: {G3: 1, traveltime: 1}})
-  })
+  });
+
+  Meteor.publish('health', function() {
+    return Students.find({}, {fields: {G1: 1, G2: 1, G3: 1, health: 1}})
+  });
 }

@@ -6,8 +6,10 @@ import 'angular-chart.js';
 
 import template from './greentree.jade';
 import { name as Titlebar } from '../titlebar/titlebar';
-import { name as BarChart } from '../charts/bar/bar';
-import { name as LineChart } from '../charts/line/line';
+import { name as Average } from '../average/average';
+import { name as Health } from '../health/health';
+import { name as Travel } from '../travel/travel';
+import { name as Stuff } from '../stuff/stuff';
 
 class Greentree {}
 
@@ -18,8 +20,10 @@ export default angular.module(name, [
   ngMaterial,
   uiRouter,
   Titlebar,
-  BarChart,
-  LineChart,
+  Average,
+  Health,
+  Travel,
+  Stuff,
   'chart.js'
 ])
 .component(name, {
@@ -28,20 +32,17 @@ export default angular.module(name, [
   controller: Greentree
 })
 .config(config)
-// .run(run);
 
-function config($locationProvider, $urlRouterProvider, $qProvider, $mdIconProvider){
+function config($locationProvider, $urlRouterProvider, $qProvider, $mdThemingProvider, $mdIconProvider){
   'ngInject';
 
   $locationProvider.html5Mode(true);
 
   $urlRouterProvider.otherwise('/');
 
-  // $qProvider.errorOnUnhandledRejections(false);
-
-  // $mdThemingProvider.theme('default')
-  //   .primaryPalette('teal')
-  //   .accentPalette('orange');
+  $mdThemingProvider.theme('default')
+    .primaryPalette('indigo')
+    .accentPalette('blue-grey');
 
   const iconPath = '/packages/planettraining_material-design-icons/bower_components/material-design-icons/sprites/svg-sprite/';
   $mdIconProvider
@@ -66,11 +67,3 @@ function config($locationProvider, $urlRouterProvider, $qProvider, $mdIconProvid
     .iconSet('toggle',
       iconPath + 'svg-sprite-toggle.svg')
 }
-
-// function run($rootScope, $state, $transitions){
-//   'ngInject';
-
-//   routerConfig($rootScope, $state, $transitions);
-
-//   return;
-// }
