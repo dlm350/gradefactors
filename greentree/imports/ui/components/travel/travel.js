@@ -23,6 +23,24 @@ class Travel {
       this.subReady = true;
     })
 
+    // Chart Colors
+    this.colors = [
+      '#D46A6A',
+      '#407F7F',
+      '#D49A6A',
+      '#55AA55',
+
+      '#AA3939',
+      '#226666',
+      '#AA6C39',
+      '#2D882D',
+
+      '#801515',
+      '#0D4D4D',
+      '#804515',
+      '#116611'
+    ];
+
     // Bubble Chart
     this.chart = {
       labels: ['<15min', '15min-30min', '30min-1hr', '>1hr'],
@@ -60,7 +78,7 @@ class Travel {
             {
               scaleLabel: {
                 display: true,
-                labelString: 'Final Grade Average',
+                labelString: 'Final Grade',
                 fontSize: 24
               },
               ticks: {

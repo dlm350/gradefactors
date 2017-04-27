@@ -23,10 +23,28 @@ class Health {
       this.subReady = true;
     })
 
+    // Health Colors
+    this.colors = [
+      '#D46A6A',
+      '#407F7F',
+      '#D49A6A',
+      '#55AA55',
+
+      '#AA3939',
+      '#226666',
+      '#AA6C39',
+      '#2D882D',
+
+      '#801515',
+      '#0D4D4D',
+      '#804515',
+      '#116611'
+    ];
+
     // Bar Chart Object
     this.bar = {
-      series: ['G1', 'G2', 'G3'],
-      labels: ['Health 1', 'Health 2', 'Health 3', 'Heath 4', 'Health 5'],
+      series: ['1st Period', '2nd Period', 'Final Grade'],
+      labels: ['Very Bad', 'Bad', 'Neutral', 'Good', 'Very Good'],
       options: {
         maintainAspectRatio: false,
         title: {
@@ -48,7 +66,8 @@ class Health {
             {
               scaleLabel: {
                 display: true,
-                fontSize: 24
+                fontSize: 24,
+                labelString: 'Health Quality'
               },
               ticks: {
                 fontSize: 16
@@ -59,7 +78,8 @@ class Health {
             {
               scaleLabel: {
                 display: true,
-                fontSize: 24
+                fontSize: 24.,
+                labelString: 'Average Grade'
               },
               ticks: {
                 stepSize: 0.5,
@@ -78,12 +98,6 @@ class Health {
       labels: this.bar.series,
       options: {
         maintainAspectRatio: false,
-        title: {
-          display: true,
-          position: 'top',
-          fontSize: 24,
-          text: 'Average Grades by Period'
-        },
         legend: {
           display: true,
           position: 'top',
@@ -97,7 +111,8 @@ class Health {
             {
               scaleLabel: {
                 display: true,
-                fontSize: 24
+                fontSize: 24,
+                labelString: 'Grade Category'
               },
               ticks: {
                 fontSize: 16
@@ -108,7 +123,8 @@ class Health {
             {
               scaleLabel: {
                 display: true,
-                fontSize: 24
+                fontSize: 24,
+                labelString: 'Grade Average'
               },
               ticks: {
                 fontSize: 16
