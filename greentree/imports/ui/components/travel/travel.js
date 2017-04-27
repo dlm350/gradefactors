@@ -1,23 +1,29 @@
+// Dependencies
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 import _ from 'underscore';
 
+// Template
 import template from './travel.jade';
 
+// API Modules
 import { Students } from '/imports/api/students';
 
+// Travel Module
 class Travel {
   constructor($scope, $reactive) {
     'ngInject';
 
     $reactive(this).attach($scope);
 
+    // Subscription
     this.subReady = false;
     this.subscribe('travel', () => [], () => {
       this.subReady = true;
     })
 
+    // Bubble Chart
     this.chart = {
       labels: ['<15min', '15min-30min', '30min-1hr', '>1hr'],
       series: ['<15min', '15min-30min', '30min-1hr', '>1hr'],
@@ -69,19 +75,35 @@ class Travel {
     }
 
     this.helpers({
+      // Data for Bubble Chart
       data() {
-        let graphData = [[], [], [], []];
+        let graphData = [ [/*<15min*/], [/*15-30min*/], [/*30min-1hr*/], [/*>1hr*/] ];
+
+        // Group Students by Travel Time Values
         let groupedStudents = _.groupBy(Students.find().fetch(), 'traveltime');
 
+        // Counter to Iterate Chart Data Array Position
         let n = 0;
+
+        // Iterate Travel-Grouped Object
         for (let key in groupedStudents) {
+          // Return if Grouping is not Finished
           if (key == 'undefined') return;
+
+          // Group Students by G3 Values
           let groupedByGrade = _.groupBy(groupedStudents[key], "G3")
 
+          // Iterate Grade-Grouped Students tp Determine Values for Chart Data Points
           for (let key2 in groupedByGrade) {
-            let normalizedValue = (20-4) / (34-0) * (groupedByGrade[key2].length-34) + 20;
-            graphData[n].push( { x: key, y: key2, r: Math.floor(normalizedValue) })
+            // Normalize Length (# of Students) Value for Data Point Radius Visibility
+            let normalizedLength = (20-4) / (34-0) * (groupedByGrade[key2].length-34) + 20;
+
+            // Push Data Point Values to Chart Data Array
+            // { X: Travel Time, Y: Grade Average, R: # of Students }
+            graphData[n].push( { x: key, y: key2, r: Math.floor(normalizedLength) })
           }
+
+          // Increment Chart Data Array Position
           n++;
         }
 
@@ -104,6 +126,7 @@ export default angular.module(name, [
 })
 .config(config)
 
+// Route/State Setup
 function config($stateProvider) {
   'ngInject';
 

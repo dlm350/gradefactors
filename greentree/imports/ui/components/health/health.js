@@ -1,23 +1,29 @@
+// Dependencies
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 import _ from 'underscore';
 
+// Template
 import template from './health.jade';
 
+// API Modules
 import { Students } from '/imports/api/students';
 
+// Health Module
 class Health {
   constructor($scope, $reactive) {
     'ngInject';
 
     $reactive(this).attach($scope);
 
+    // Subscription
     this.subReady = false;
     this.subscribe('health', () => [], () => {
       this.subReady = true;
     })
 
+    // Bar Chart Object
     this.bar = {
       series: ['G1', 'G2', 'G3'],
       labels: ['Health 1', 'Health 2', 'Health 3', 'Heath 4', 'Health 5'],
@@ -66,6 +72,7 @@ class Health {
       datasetOverride: []
     }
 
+    // Line Chart Object
     this.line = {
       series: this.bar.labels,
       labels: this.bar.series,
@@ -115,12 +122,19 @@ class Health {
     }
 
     this.helpers({
+      // Data for Bar Chart
       barData() {
-        let graphData = [ [/*G1*/], [/*G2*/], [/*G2*/] ];
+        let chartData = [ [/*G1*/], [/*G2*/], [/*G2*/] ];
+
+        // Group Students by Health Quality Values
         let groupedStudents = _.groupBy(Students.find().fetch(), 'health');
 
+        // Iterate Grouped Object to Determine Values for Bar Chart Data
         for (let key in groupedStudents) {
+          // Return if Grouping is not Finished
           if (key == 'undefined') return;
+
+          // Set Count for Average Calculation
           let count = groupedStudents[key].length;
           let total = {
             g1: 0,
@@ -128,26 +142,38 @@ class Health {
             g3: 0
           };
 
+          // Iterate Students to Calculate Averages
           groupedStudents[key].forEach( (student) => {
             total.g1 += parseInt(student.G1);
             total.g2 += parseInt(student.G2);
             total.g3 += parseInt(student.G3);
           })
 
-          graphData[0].push( (total.g1 / count).toFixed(2) );
-          graphData[1].push( (total.g2 / count).toFixed(2) );
-          graphData[2].push( (total.g3 / count).toFixed(2) );
+          // Push Average Values to Bar Chart Data Array
+          chartData[0].push( (total.g1 / count).toFixed(2) );
+          chartData[1].push( (total.g2 / count).toFixed(2) );
+          chartData[2].push( (total.g3 / count).toFixed(2) );
         }
 
-        return graphData;
+        return chartData;
       },
+
+      // Data for Line Chart
       lineData() {
-        let graphData = [ [/*Health 1*/], [/*Health 2*/], [/*Health 3*/], [/*Health 4*/], [/*Health 5*/] ];
+        let chartData = [ [/*Health 1*/], [/*Health 2*/], [/*Health 3*/], [/*Health 4*/], [/*Health 5*/] ];
+
+        // Group Students by Health Quality Values
         let groupedStudents = _.groupBy(Students.find().fetch(), 'health');
 
+        // Counter to Iterate Chart Data Array Position
         let n = 0;
+
+        // Iterate Grouped Object to Determine Values for Line Chart Data
         for (let key in groupedStudents) {
+          // Return if Grouping is not Finished
           if (key == 'undefined') return;
+
+          // Set Count for Average Calculation
           let count = groupedStudents[key].length;
           let total = {
             g1: 0,
@@ -155,19 +181,23 @@ class Health {
             g3: 0
           };
 
+          // Iterate Students to Calculate Averages
           groupedStudents[key].forEach( (student) => {
             total.g1 += parseInt(student.G1);
             total.g2 += parseInt(student.G2);
             total.g3 += parseInt(student.G3);
           })
 
-          graphData[n].push( (total.g1 / count).toFixed(2) );
-          graphData[n].push( (total.g2 / count).toFixed(2) );
-          graphData[n].push( (total.g3 / count).toFixed(2) );
+          // Push Average Values to Line Chart Data Array
+          chartData[n].push( (total.g1 / count).toFixed(2) );
+          chartData[n].push( (total.g2 / count).toFixed(2) );
+          chartData[n].push( (total.g3 / count).toFixed(2) );
+
+          // Increment Chart Data Array Position
           n++;
         }
 
-        return graphData;
+        return chartData;
       }
     });
   }
@@ -186,6 +216,7 @@ export default angular.module(name, [
 })
 .config(config)
 
+// Route/State Setup
 function config($stateProvider) {
   'ngInject';
 

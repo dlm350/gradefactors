@@ -1,25 +1,32 @@
+// Dependencies
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 import _ from 'underscore';
 
+// Template
 import template from './average.jade';
 
+// API Modules
 import { Students } from '/imports/api/students';
 
+// Average Module
 class Average {
   constructor($scope, $reactive) {
     'ngInject';
 
     $reactive(this).attach($scope);
 
+    // Subscription
     this.subReady = false;
     this.subscribe('average', () => [{
+      // Reactively get Type Value to Renew Subscription
       type: this.getReactively('type')
     }], () => {
       this.subReady = true;
     })
 
+    // Variables
     this.colors = [
       '#D46A6A',
       '#D49A6A',
@@ -36,6 +43,8 @@ class Average {
     ];
     this.type = '';
     this.labels = [];
+
+    // Pie Chart
     this.pie = {
       type: 'pie',
       data: [],
@@ -58,6 +67,7 @@ class Average {
       },
       datasetOverride: []
     }
+    // Bar Chart
     this.bar = {
       data: [ [], [] ],
       options: {
@@ -118,6 +128,7 @@ class Average {
     }
 
     this.helpers({
+      // Types for Select Dropdown
       types() {
         return [
           {val: 'school', name: 'School'},
@@ -153,39 +164,52 @@ class Average {
         ]
       },
 
+      // Data for Charts
       students() {
-        this.bar.data = [ [/*Min*/], [/*Max*/], [/*Avg*/] ];
-        this.pie.data = [];
         this.labels = [];
+        this.bar.data = [ [/*Min*/], [/*Max*/], [/*Avg*/] ];
+        this.pie.data = [ /*Total*/ ];
+
+        // Set X-Axis Label
         this.bar.options.scales.xAxes[0].scaleLabel.labelString = this.type.name;
 
+        // Sort Students by Value
         let sortedStudents = _.sortBy(Students.find().fetch(), this.type.val);
-        let groupedStudents;
 
+        let groupedStudents;
+        // If Type is Absences, Requires Further Grouping
         if ( this.type.val == 'absences' ) {
+
+          // Group Students by Custom Range
+          // [ 0, 1-10, 11-20, 21-30, 31-40, 41-50, 51-60, 61-70, 71-80, 81-90, 91-100 ]
           groupedStudents = _.groupBy(sortedStudents, function(student) {
             let absences = parseInt(student.absences);
             if( absences == 0 ) return '0';
 
             let n = 1;
             while ( n < 100 ) {
-              if ( absences < n+10 ) {
-                return ( n.toString() + '-' + (n+9).toString() );
-              }
+              // Return Value Range for Grouping
+              if ( absences < n+10 ) return ( n.toString() + '-' + (n+9).toString() );
               n += 10;
             }
           });
         } else {
+          // Group Students by Type Value
           groupedStudents = _.groupBy(sortedStudents, this.type.val);
         }
 
+        // Iterate Grouped Object to Determine Values for Chart Data
         for (let key in groupedStudents) {
+          // Return if Grouping is not Finished
           if (key == 'undefined') return;
+
+          // Set Count for Average Calculation
           let count = groupedStudents[key].length;
           let total = 0;
-
           let min = 20;
           let max = 0;
+
+          // Iterate Students to Calculate Minimum, Maximum, and Total Values
           groupedStudents[key].forEach( (student) => {
             let grade = parseInt(student.G3);
             total += grade;
@@ -193,16 +217,22 @@ class Average {
             max = (grade > max) ? grade : max;
           })
 
+          // Push Key String Value as Label
           this.labels.push(key);
-          this.bar.data[2].push( (total / count).toFixed(2) );
+
+          // Push Minimum, Maximum, and Average Values to Bar Chart Data Array
           this.bar.data[0].push( min );
           this.bar.data[1].push( max );
+          this.bar.data[2].push( (total / count).toFixed(2) );
+
+          // Push Count Value to Pie Chart Data Array
           this.pie.data.push( count );
         }
       }
     });
   }
 
+  // Toggles between Pie and Polar Chart Type
   toggleChart() {
     this.pie.type = (this.pie.type == 'pie') ? 'polarArea' : 'pie';
   }
@@ -221,6 +251,7 @@ export default angular.module(name, [
 })
 .config(config)
 
+// Route/State Setup
 function config($stateProvider) {
   'ngInject';
 

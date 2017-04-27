@@ -1,8 +1,11 @@
+// Dependencies
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 
+// Template
 import template from './titlebar.jade';
 
+// TitleBar Module
 class Titlebar {
   constructor($scope, $reactive) {
     'ngInject';
