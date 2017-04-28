@@ -1,0 +1,15 @@
+md-card(md-whiteframe="10")
+  md-toolbar.md-primary(md-whiteframe="5")
+    md-card-title
+      md-card-title-text.md-toolbar-tools
+        span.md-headline
+          | Effects of Health Quality on Grades
+  md-card-content(layout="column" layout-align="center center")
+    div(ng-if="!health.subReady" layout="column" layout-align="center center" layout-margin layout-padding)
+      md-subheader.md-primary
+        h2 No Data to Display
+    .chart-div.line(flex="45")
+      canvas#mixed.chart-bar(ng-show="health.subReady" chart-data="health.barData" chart-series="health.bar.series" chart-labels="health.bar.labels" chart-options="health.bar.options" chart-colors="health.colors" chart-dataset-override="health.bar.datasetOverride")
+    span(flex)
+    .chart-div.line(flex="45")
+      canvas#mixed.chart-line(ng-show="health.subReady" chart-data="health.lineData" chart-series="health.line.series" chart-labels="health.line.labels" chart-options="health.line.options" chart-dataset-override="health.line.datasetOverride")
