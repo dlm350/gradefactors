@@ -12,12 +12,12 @@ import { name as Health } from '../health/health';
 import { name as Travel } from '../travel/travel';
 
 // Templates
-import template from './greentree.jade';
+import template from './gradeFactors.jade';
 
-// GreenTree Application
-class Greentree {}
+// GradeFactors Application
+class GradeFactors {}
 
-const name = 'greentree';
+const name = 'gradeFactors';
 
 export default angular.module(name, [
   angularMeteor,
@@ -32,7 +32,7 @@ export default angular.module(name, [
 .component(name, {
   template,
   controllerAs: name,
-  controller: Greentree
+  controller: GradeFactors
 })
 .config(config)
 

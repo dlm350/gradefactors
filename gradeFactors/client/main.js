@@ -1,3 +1,3 @@
 import angular from 'angular';
 
-import { name as Greentree } from '../imports/ui/components/greentree/greentree';
+import { name as GradeFactors } from '../imports/ui/components/gradeFactors/gradeFactors';
